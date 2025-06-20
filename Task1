@@ -1,0 +1,59 @@
+import java.util.*;
+
+class Student {
+    String name;
+    int score;
+
+    Student(String name, int score) {
+        this.name = name;
+        this.score = score;
+    }
+}
+
+public class StudentGradeTracker {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Student> students = new ArrayList<>();
+
+        System.out.print("Enter number of students: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter name of student " + (i + 1) + ": ");
+            String name = sc.nextLine();
+            System.out.print("Enter score for " + name + ": ");
+            int score = sc.nextInt();
+            sc.nextLine();
+            students.add(new Student(name, score));
+        }
+
+        int total = 0, highest = Integer.MIN_VALUE, lowest = Integer.MAX_VALUE;
+        String topStudent = "", lowStudent = "";
+
+        for (Student s : students) {
+            total += s.score;
+            if (s.score > highest) {
+                highest = s.score;
+                topStudent = s.name;
+            }
+            if (s.score < lowest) {
+                lowest = s.score;
+                lowStudent = s.name;
+            }
+        }
+
+        double average = (double) total / n;
+
+        System.out.println("\n--- Summary Report ---");
+        System.out.println("Total Students: " + n);
+        System.out.printf("Average Score: %.2f\n", average);
+        System.out.println("Highest Score: " + highest + " by " + topStudent);
+        System.out.println("Lowest Score: " + lowest + " by " + lowStudent);
+
+        System.out.println("\nDetailed Student Scores:");
+        for (Student s : students) {
+            System.out.println(s.name + ": " + s.score);
+        }
+    }
+}
