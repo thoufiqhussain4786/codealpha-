@@ -1,0 +1,65 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class AIChatbot {
+    private static final Map<String, String> knowledgeBase = new HashMap<>();
+
+    public static void main(String[] args) {
+        prepareKnowledgeBase();
+
+        JFrame frame = new JFrame("AI Chatbot");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 500);
+
+        JTextArea chatArea = new JTextArea();
+        chatArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+
+        JTextField inputField = new JTextField();
+        JButton sendButton = new JButton("Send");
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(inputField, BorderLayout.CENTER);
+        panel.add(sendButton, BorderLayout.EAST);
+
+        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        frame.getContentPane().add(panel, BorderLayout.SOUTH);
+
+        sendButton.addActionListener(e -> {
+            String userText = inputField.getText().trim();
+            if (!userText.isEmpty()) {
+                chatArea.append("You: " + userText + "\n");
+                String response = getResponse(userText);
+                chatArea.append("Bot: " + response + "\n");
+                inputField.setText("");
+            }
+        });
+
+        inputField.addActionListener(e -> sendButton.doClick());
+
+        frame.setVisible(true);
+    }
+
+    private static void prepareKnowledgeBase() {
+        knowledgeBase.put("hi", "Hello! How can I assist you today?");
+        knowledgeBase.put("hello", "Hi there! What can I help you with?");
+        knowledgeBase.put("how are you", "I'm just a bunch of code, but I'm functioning as expected!");
+        knowledgeBase.put("what is your name", "I am CodeAlpha Bot.");
+        knowledgeBase.put("bye", "Goodbye! Have a nice day.");
+        knowledgeBase.put("thank you", "You're welcome!");
+        
+    }
+
+    private static String getResponse(String input) {
+        input = input.toLowerCase();
+        for (String key : knowledgeBase.keySet()) {
+            if (input.contains(key)) {
+                return knowledgeBase.get(key);
+            }
+        }
+        return "I'm sorry, I didn't understand that. Can you please rephrase?";
+    }
+}
